@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.getName()}"></title>
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header header--admin">
+        <nav class="header__nav header__nav--admin">
+            <a class="menu-btn menu-btn--dark" href="/admin/products">Товары</a>
+            <a class="menu-btn menu-btn--dark" href="/admin/people">Покупатели</a>
+        </nav>
+        <a href="/index" class="header__logo">
+            <p class="header__title">Главная</p>
+            <img class="header__img" src="/a-logo.png">
+        </a>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Информация о товаре</p>
+        </div>
+        <div class="profile__info">
+            <p class="profile__title">Название:</p>
+            <p class="profile__text" th:text="${product.getName()}"></p>
+            <p class="profile__title">Цена:</p>
+            <p class="profile__text" th:text="${product.getPrice()}"></p>
+            <p class="profile__title">Количество:</p>
+            <p class="profile__text" th:text="${product.getCount()}"></p>
+            <p class="profile__title">Животное:</p>
+            <p class="profile__text" th:text="${product.getAnimal().toString()}"></p>
+            <p class="profile__title">Тип:</p>
+            <p class="profile__text" th:text="${product.getTypeProduct().toString()}"></p>
+        </div>
+        <div class="product-info__desc">
+            <p class="product-info__info-title">Описание товара:</p>
+            <p class="product-info__info-desc" th:text="${product.getDescription()}"></p>
+        </div>
+        <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${product.getId()})}">
+            <input class="menu-btn menu-btn--no menu-btn--fit" type="submit" value="Удалить">
+        </form>
+        <div class="title">
+            <p class="title__text--small">Заказы</p>
+        </div>
+        <section>
+            <div class="title title--desc" th:if="${ordered.isEmpty()}">
+                <p class="title__desc">Заказов нет</p>
+            </div>
+            <table class="table" th:unless="${ordered.isEmpty()}">
+                <colgroup>
+                    <col style="width: 40%;">
+                    <col style="width: 40%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Почта</th>
+                        <th>Кнопки</th>
+                    </tr>
+                    <tr th:each="order: ${ordered}">
+                        <td><a th:text="${order.getPerson.getName()}" th:href="@{/admin/people/{id}(id=${order.getPerson.getId()})}" ></a></td>
+                        <td th:text="${order.getPerson.getEmail()}"></td>
+                        <td>
+                            <form th:action="@{/admin/products/order}" th:method="POST">
+                                <input type="hidden" name="order" th:value="${order.getId()}">
+                                <input class="menu-btn menu-btn--yes menu-btn--fit" type="submit" value="Выдать">
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <div class="title">
+            <p class="title__text--small">Покупали ранее</p>
+        </div>
+        <section>
+            <div class="title title--desc" th:if="${took.isEmpty()}">
+                <p class="title__desc">Товар ещё не покупали</p>
+            </div>
+            <table th:unless="${took.isEmpty()}" class="table">
+                <colgroup>
+                    <col style="width: 33.33%;">
+                    <col style="width: 33.33%;">
+                    <col style="width: 33.33%;">
+                </colgroup>
+                <tr>
+                    <th>Имя</th>
+                    <th>Почта</th>
+                    <th>Удаление</th>
+                </tr>
+                <tr th:each="order: ${took}">
+                    <td><a th:text="${order.getPerson.getName()}" th:href="@{/admin/people/{id}(id=${order.getPerson.getId()})}"></a></td>
+                    <td th:text="${order.getPerson.getEmail()}"></td>
+                    <td>
+                        <form th:action="@{/admin/products/order}" th:method="DELETE">
+                            <input type="hidden" name="order" th:value="${order.getId()}">
+                            <input class="menu-btn menu-btn--no menu-btn--fit" type="submit" value="Удалить">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </main>
+    <footer class="footer footer--admin">
+        <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+    </footer>
+</body>
+</html>

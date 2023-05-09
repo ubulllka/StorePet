@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.getName()}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header">
+        <a class="header__logo" href="/index">
+            <img class="header__img" th:src="@{/logo.png}">
+            <p class="header__title">Зоомагазин</p>
+        </a>
+        <nav class="header__nav">
+            <div class="header__item">
+                <a class="menu-btn" href="/products">Товары</a>
+            </div>
+            <div class="header__item">
+                <a th:if="${isAuthorised}" class="menu-link" href="/profile/liked_products">Понравившееся товары</a>
+                <a th:if="${isAuthorised}" class="menu-btn menu-btn--dark" href="/profile">Профиль</a>
+                <a th:unless="${isAuthorised}" class="menu-link" href="/auth/registration" >Регистрация</a>
+                <a th:unless="${isAuthorised}" class="menu-btn menu-btn--dark" href="/login">Войти</a>
+            </div>
+        </nav>
+    </header>
+    <main class="content">
+        <div class="product-info">
+            <div class="product-info__title">
+                <p class="product-info__title-text" th:text="${product.getName()}"></p>
+            </div>
+            <div class="product-info__info">
+                <p class="product-info__info-title">Животное:</p>
+                <p class="product-info__info-desc" th:text="${product.getAnimal()}"></p>
+                <p class="product-info__info-title">Тип продукта:</p>
+                <p class="product-info__info-desc" th:text="${product.getTypeProduct()}"></p>
+                <p class="product-info__info-title">Количество:</p>
+                <p class="product-info__info-desc" th:text="${product.getCount()}"></p>
+                <p class="product-info__info-title">Цена:</p>
+                <p class="product-info__info-desc"><span class="product-info__info-desc" th:text="${product.getPrice()}"></span> руб.</p>
+            </div>
+            <div class="product-info__desc">
+                <p class="product-info__info-title">Описание:</p>
+                <p class="product-info__info-desc" th:text="${product.getDescription()}"></p>
+            </div>
+        </div>
+        <div class="product-content" th:if="${isAuthorised}">
+            <form th:method="DELETE" th:action="@{/products/{id}(id=${product.getId()})}" th:if="${isLiked}">
+                <input class="menu-btn menu-btn--no" type="submit" value="Убрать лайк">
+            </form>
+            <form th:method="POST" th:action="@{/products/{id}(id=${product.getId()})}" th:unless="${isLiked}">
+                <input class="menu-btn menu-btn--yes" type="submit" value="Лайкнуть">
+            </form>
+
+            <form th:method="POST" th:action="@{/order/add/{id}(id=${product.getId()})}" th:if="${isFree}">
+                <input class="menu-btn menu-btn--dark" type="submit" value="Заказать">
+            </form>
+
+            <div>
+                <p class="product-info__info-title" th:unless="${isFree}">Товара нет в наличии</p>
+                <p class="product-info__info-title">Товар заказан в количестве
+                    <span class="product-info__info-title" th:text="${count}"></span>
+                    шт.
+                </p>
+            </div>
+        </div>
+        <div class="product-content" th:unless="${isAuthorised}">
+            <p class="title__desc">Чтобы заказать товар необходима авторизация</p>
+            <a class="menu-btn menu-btn--dark menu-btn--fit" href="/login">Авторизироваться</a>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer__item footer__item--left">
+            <p class="footer__text">+7 (9999) 99-99-99</p>
+            <p class="footer__text">store-pet@mail.ru</p>
+            <p class="footer__text">пн. – пт.: 09:00 – 21:00</p>
+            <p class="footer__text">сб. – вс.: 10:00 – 20:00</p>
+        </div>
+        <div class="footer__item footer__item--right">
+            <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header header--admin">
+        <nav class="header__nav header__nav--admin">
+            <a class="menu-btn menu-btn--dark" href="/admin/products">Товары</a>
+            <a class="menu-btn menu-btn--dark" href="/admin/people">Покупатели</a>
+        </nav>
+        <a href="/index" class="header__logo">
+            <p class="header__title">Главная</p>
+            <img class="header__img" src="/a-logo.png">
+        </a>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Товары</p>
+        </div>
+        <form class="admin-form" method="get" action="/admin/products">
+            <input class="admin-form__input" type="text" name="search" th:value="${search}" placeholder="Поиск">
+            <input class="menu-btn menu-btn--dark menu-btn--fit" type="submit" value="Найти">
+            <a class="admin-form__link menu-btn menu-btn--dark menu-btn--fit" href="/admin/add">Добавить товар</a>
+        </form>
+        <table class="table">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Животное</th>
+                    <th>Тип</th>
+                </tr>
+                <tr th:each="product: ${products}">
+                    <td><a th:text="${product.getName()}" th:href="@{/admin/products/{id}(id=${product.getId()})}"></a></td>
+                    <td th:text="${product.getPrice()}"></td>
+                    <td th:text="${product.getCount()}"></td>
+                    <td th:text="${product.getAnimal()}"></td>
+                    <td th:text="${product.getTypeProduct()}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="pag">
+            <li class="pag__item" th:each="number : ${#numbers.sequence(0, pageCount-1)}">
+                <a class="pag__link" th:href="@{/admin/products(page=${number}, search=${search})}" th:text="${number+1}"></a>
+            </li>
+        </ul>
+        <a class="menu-btn menu-btn--dark menu-btn--fit" href="/admin/batch">Вставить 100 товаров</a>
+    </main>
+    <footer class="footer footer--admin">
+            <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+    </footer>
+</body>
+</html>

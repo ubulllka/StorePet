@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление товара</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header header--admin">
+        <nav class="header__nav header__nav--admin">
+            <a class="menu-btn menu-btn--dark" href="/admin/products">Товары</a>
+            <a class="menu-btn menu-btn--dark" href="/admin/people">Покупатели</a>
+        </nav>
+        <a href="/index" class="header__logo">
+            <p class="header__title">Главная</p>
+            <img class="header__img" src="/a-logo.png">
+        </a>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Добавление товара</p>
+        </div>
+        <form class="form" th:method="POST" th:action="@{/admin/add}" th:object="${product}" enctype="multipart/form-data">
+            <p class="form__text">Название:</p>
+            <input class="form__input" type="text" th:field="*{name}">
+            <p class="form__text">Животное:</p>
+            <select class="form__input" th:field="*{animal}">
+                <option th:each="anim : ${animals}" th:value="${anim}" th:text="${anim.toString()}"></option>
+            </select>
+            <p class="form__text">Тип продукта:</p>
+            <select class="form__input" th:field="*{typeProduct}">
+                <option th:each="typ: ${types}" th:value="${typ}" th:text="${typ.toString()}"></option>
+            </select>
+            <p class="form__text">Цена:</p>
+            <input class="form__input" type="number" th:field="*{price}">
+            <p class="form__text">Количество:</p>
+            <input class="form__input" type="text" value="" th:field="*{count}" id="count">
+            <p class="form__text">Описание:</p>
+            <textarea class="form__input" th:field="*{description}" id="description"></textarea>
+
+            <input class="menu-btn menu-btn--dark menu-btn--fit" type="submit" value="Сохранить">
+        </form>
+    </main>
+    <footer class="footer footer--admin">
+        <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${person.getName()}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header header--admin">
+        <nav class="header__nav header__nav--admin">
+            <a class="menu-btn menu-btn--dark" href="/admin/products">Товары</a>
+            <a class="menu-btn menu-btn--dark" href="/admin/people">Покупатели</a>
+        </nav>
+        <a href="/index" class="header__logo">
+            <p class="header__title">Главная</p>
+            <img class="header__img" src="/a-logo.png">
+        </a>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Информация о покупателе</p>
+        </div>
+        <div class="profile__info">
+            <p class="profile__title">Имя:</p>
+            <p class="profile__text" th:text="${person.getName()}"></p>
+            <p class="profile__title">Почта:</p>
+            <p class="profile__text" th:text="${person.getEmail()}"></p>
+        </div>
+        <div class="title">
+            <p class="title__text--small">Заказы</p>
+        </div>
+        <section>
+            <div class="title title--desc" th:if="${orderedProducts.isEmpty()}">
+                <p class="title__desc">Заказов нет</p>
+            </div>
+            <div class="products" th:unless="${orderedProducts.isEmpty()}">
+                <div class="card-product card-product--admin" th:each="order : ${orderedProducts}">
+                    <p class="card-product__name" th:text="${order.getProduct().getName()}"></p>
+                    <div class="card-product__descr">
+                        <p class="card-product__text">Животное:</p>
+                        <p class="card-product__text" th:text="${order.getProduct().getAnimal().toString()}"></p>
+                        <p class="card-product__text">Тип:</p>
+                        <p class="card-product__text" th:text="${order.getProduct().getTypeProduct().toString()}"></p>
+                    </div>
+                    <p class="card-product__price"><span class="card-product__price" th:text="${order.getProduct().getPrice()}"></span> руб.</p>
+                    <a class="card-product__link" th:href="@{/admin/products/{id}(id=${order.getProduct().getId()})}">Подробнее</a>
+                    <form th:action="@{/admin/order}" th:method="POST">
+                        <input type="hidden" name="order" th:value="${order.getId()}">
+                        <input class="menu-btn menu-btn--yes menu-btn--fit card-product__btn" type="submit" value="Выдать">
+                    </form>
+                </div>
+            </div>
+        </section>
+        <div class="title">
+            <p class="title__text--small">Покупал ранее</p>
+        </div>
+        <section>
+            <div class="title title--desc" th:if="${tookProducts.isEmpty()}">
+                <p class="title__desc">Книг на руках нет</p>
+            </div>
+            <div class="products" th:unless="${tookProducts.isEmpty()}">
+                <div  class="card-product card-product--admin" th:each="order : ${tookProducts}">
+                    <p class="card-product__name" th:text="${order.getProduct().getName()}"></p>
+                    <div class="card-product__descr">
+                        <p class="card-product__text">Животное:</p>
+                        <p class="card-product__text" th:text="${order.getProduct().getAnimal().toString()}"></p>
+                        <p class="card-product__text">Тип:</p>
+                        <p class="card-product__text" th:text="${order.getProduct().getTypeProduct().toString()}"></p>
+                    </div>
+                    <p class="card-product__price"><span class="card-product__price" th:text="${order.getProduct().getPrice()}"></span> руб.</p>
+                    <a class="card-product__link" th:href="@{/admin/products/{id}(id=${order.getProduct().getId()})}">Подробнее</a>
+                    <div class="admin__block__btn">
+                        <form th:action="@{/admin/order}" th:method="DELETE">
+                            <input type="hidden" name="order" th:value="${order.getId()}">
+                            <input class="menu-btn menu-btn--no menu-btn--fit card-product__btn" type="submit" value="Удалить">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer footer--admin">
+        <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+    </footer>
+</body>
+</html>

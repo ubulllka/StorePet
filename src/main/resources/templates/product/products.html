@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Товары</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header">
+        <a class="header__logo" href="/index">
+            <img class="header__img" th:src="@{/logo.png}">
+            <p class="header__title">Зоомагазин</p>
+        </a>
+        <nav class="header__nav">
+            <div class="header__item">
+                <a class="menu-btn" href="/products">Товары</a>
+            </div>
+            <div class="header__item">
+                <a th:if="${isAuthorised}" class="menu-link" href="/profile/liked_products">Понравившееся товары</a>
+                <a th:if="${isAuthorised}" class="menu-btn menu-btn--dark" href="/profile">Профиль</a>
+                <a th:unless="${isAuthorised}" class="menu-link" href="/auth/registration" >Регистрация</a>
+                <a th:unless="${isAuthorised}" class="menu-btn menu-btn--dark" href="/login">Войти</a>
+            </div>
+        </nav>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Товары</p>
+        </div>
+        <div class="products-form">
+            <form class="products-form__search" method="get" action="/products">
+                <input type="hidden" th:value="${productsPerPage}" name="products_per_page">
+                <input class="form__input products-form__input" type="text" name="search" th:value="${search}">
+                <input class="menu-btn menu-btn--dark products-form__btn" type="submit" value="найти">
+            </form>
+            <form class="products-form__count" method="get" action="/products">
+                <input type="hidden" name="search" th:value="${search}">
+                <select class="products-form__select" name="products_per_page">
+                    <option value="15" th:if="${productsPerPage == 15}" selected>15</option>
+                    <option value="15" th:unless="${productsPerPage == 15}">15</option>
+                    <option value="30" th:if="${productsPerPage == 30}" selected>30</option>
+                    <option value="30" th:unless="${productsPerPage == 30}">30</option>
+                    <option value="45" th:if="${productsPerPage == 45}" selected>45</option>
+                    <option value="45" th:unless="${productsPerPage == 45}">45</option>
+                </select>
+                <input class="menu-btn menu-btn--dark products-form__btn" type="submit" value="показать">
+            </form>
+        </div>
+        <section class="products">
+            <div class="card-product" th:each="product : ${products}">
+                <p class="card-product__name" th:text="${product.getName()}"></p>
+                <div class="card-product__descr">
+                    <p class="card-product__text">Животное:</p>
+                    <p class="card-product__text" th:text="${product.getAnimal().toString}"></p>
+                    <p class="card-product__text">Тип:</p>
+                    <p class="card-product__text" th:text="${product.getTypeProduct().toString}"></p>
+                </div>
+                <p class="card-product__price"><span class="card-product__price" th:text="${product.getPrice()}"></span> руб.</p>
+                <a class="card-product__link" th:href="@{/products/{id}(id=${product.getId()})}">Подробнее</a>
+            </div>
+        </section>
+        <div class="pag">
+            <li class="pag__item" th:each="number : ${#numbers.sequence(0, pageCount-1)}">
+                <a class="pag__link" th:href="@{/products(page=${number}, products_per_page=${productsPerPage}, search=${search})}"  th:text="${number+1}"></a>
+            </li>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer__item footer__item--left">
+            <p class="footer__text">+7 (9999) 99-99-99</p>
+            <p class="footer__text">store-pet@mail.ru</p>
+            <p class="footer__text">пн. – пт.: 09:00 – 21:00</p>
+            <p class="footer__text">сб. – вс.: 10:00 – 20:00</p>
+        </div>
+        <div class="footer__item footer__item--right">
+            <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+        </div>
+    </footer>
+</body>
+</html>

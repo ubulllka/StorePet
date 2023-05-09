@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header">
+        <a class="header__logo" href="/index">
+            <img class="header__img" th:src="@{/logo.png}">
+            <p class="header__title">Зоомагазин</p>
+        </a>
+        <nav class="header__nav">
+            <div class="header__item">
+                <a class="menu-btn" href="/products">Товары</a>
+            </div>
+            <div class="header__item">
+                <a th:if="${isAuthorised}" class="menu-link" href="/profile/liked_products">Понравившееся товары</a>
+                <a th:if="${isAuthorised}" class="menu-btn menu-btn--dark" href="/profile">Профиль</a>
+                <a th:unless="${isAuthorised}" class="menu-link" href="/auth/registration" >Регистрация</a>
+                <a th:unless="${isAuthorised}" class="menu-btn menu-btn--dark" href="/login">Войти</a>
+            </div>
+        </nav>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Регистрация</p>
+        </div>
+        <form class="form" th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+            <input class="form__input" type="text" th:field="*{name}" id="name" placeholder="Введите имя:">
+            <div><p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p></div>
+
+            <input class="form__input" type="text" th:field="*{email}" id="email" placeholder="Введите почту:">
+            <div><p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p></div>
+
+            <input class="form__input" type="text" th:field="*{password}" id="password" placeholder="Введите пароль:">
+            <div><p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p></div>
+
+            <input class="menu-btn form__btn" type="submit" value="Зарегистрироваться">
+        </form>
+    </main>
+    <footer class="footer">
+        <div class="footer__item footer__item--left">
+            <p class="footer__text">+7 (9999) 99-99-99</p>
+            <p class="footer__text">store-pet@mail.ru</p>
+            <p class="footer__text">пн. – пт.: 09:00 – 21:00</p>
+            <p class="footer__text">сб. – вс.: 10:00 – 20:00</p>
+        </div>
+        <div class="footer__item footer__item--right">
+            <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+        </div>
+    </footer>
+</body>
+</html>

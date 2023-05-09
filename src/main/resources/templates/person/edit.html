@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование профиля</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/styles.css" />
+</head>
+<body>
+    <header class="header">
+        <a class="header__logo" href="/index">
+            <img class="header__img" th:src="@{/logo.png}">
+            <p class="header__title">Зоомагазин</p>
+        </a>
+        <nav class="header__nav">
+            <div class="header__item">
+                <a class="menu-btn" href="/products">Товары</a>
+            </div>
+            <div class="header__item">
+                <a class="menu-link" href="/profile/liked_products">Понравившееся товары</a>
+                <a class="menu-btn menu-btn--dark" href="/profile">Профиль</a>
+            </div>
+        </nav>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Редактирование профиля</p>
+        </div>
+        <form class="form" th:method="PATCH" th:action="@{/profile/edit}" th:object="${person}">
+            <p class="form__text">Имя:</p>
+            <input class="form__input" type="text" th:field="*{name}" id="name" placeholder="Введите имя:">
+            <div><p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p></div>
+            <p class="form__text">Почта:</p>
+            <input class="form__input" type="text" th:field="*{email}" id="email" placeholder="Введите почту:">
+            <div><p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p></div>
+            <input class="menu-btn form__btn" type="submit" value="Сохранить">
+        </form>
+    </main>
+    <footer class="footer">
+        <div class="footer__item footer__item--left">
+            <p class="footer__text">+7 (9999) 99-99-99</p>
+            <p class="footer__text">store-pet@mail.ru</p>
+            <p class="footer__text">пн. – пт.: 09:00 – 21:00</p>
+            <p class="footer__text">сб. – вс.: 10:00 – 20:00</p>
+        </div>
+        <div class="footer__item footer__item--right">
+            <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+        </div>
+    </footer>
+</body>
+</html>

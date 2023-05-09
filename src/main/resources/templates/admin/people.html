@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ</title>
+    <link rel="stylesheet" href="/style/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header class="header header--admin">
+        <nav class="header__nav header__nav--admin">
+            <a class="menu-btn menu-btn--dark" href="/admin/products">Товары</a>
+            <a class="menu-btn menu-btn--dark" href="/admin/people">Покупатели</a>
+        </nav>
+        <a href="/index" class="header__logo">
+            <p class="header__title">Главная</p>
+            <img class="header__img" src="/a-logo.png">
+        </a>
+    </header>
+    <main class="content">
+        <div class="title">
+            <p class="title__text">Покупатели</p>
+        </div>
+        <form class="admin-form admin-form--people"  method="get" action="/admin/people">
+            <input class="admin-form__input" type="text" name="search" th:value="${search}" placeholder="Поиск">
+            <input class="menu-btn menu-btn--dark menu-btn--fit" type="submit" value="Найти">
+        </form>
+        <table class="table">
+            <colgroup>
+                <col style="width: 50%;">
+                <col style="width: 50%;">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>Имя</th>
+                    <th>Почта</th>
+                </tr>
+                <tr th:each="person: ${people}">
+                    <td><a th:text="${person.getName()}" th:href="@{/admin/people/{id}(id=${person.getId()})}"></a></td>
+                    <td th:text="${person.getEmail()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <footer class="footer footer--admin">
+        <p class="footer__text">©РТУ МИРЭА ИКБО-01-21 Булгакова У.И.</p>
+    </footer>
+</body>
+</html>
